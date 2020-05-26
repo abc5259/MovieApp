@@ -5,6 +5,7 @@ import MainImage from "../LandingPage/Section/MainImage";
 import MovieInfo from "./Sections/MovieInfo";
 import { Row } from "antd";
 import GridCards from "../commons/GridCards";
+import Favorite from "./Sections/Favorite";
 
 function MovieDetail(props) {
   let movieId = props.match.params.movieId;
@@ -43,6 +44,13 @@ function MovieDetail(props) {
       />
       {/* Body */}
       <div style={{ width: "85%", margin: "1rem auto" }}>
+        <div style={{ display: "flex", justifyContent: "flex-end" }}>
+          <Favorite
+            movieInfo={Movie}
+            movieId={movieId}
+            userFrom={localStorage.getItem("userId")}
+          />
+        </div>
         {/* Movie Info */}
         <MovieInfo movie={Movie} />
         <br />
