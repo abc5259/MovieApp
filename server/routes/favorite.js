@@ -16,7 +16,7 @@ router.post("/favorited", (req, res) => {
   //내가 이 영화를 Favorite 리스트에 넣었는지 DB에서 가져오기
   Favorite.find({
     movieId: req.body.movieId,
-    userForm: req.body.userForm,
+    userFrom: req.body.userFrom,
   }).exec((err, info) => {
     if (err) return res.status(400).send(err);
     let result = false;
@@ -31,7 +31,7 @@ router.post("/favorited", (req, res) => {
 router.post("/removeFormFavorite", (req, res) => {
   Favorite.findOneAndDelete({
     movieId: req.body.movieId,
-    userForm: req.body.userForm,
+    userFrom: req.body.userFrom,
   }).exec((err, doc) => {
     if (err) return res.status(400).send(err);
     res.status(200).json({ success: true, doc });
@@ -43,6 +43,23 @@ router.post("/addToFavorite", (req, res) => {
   favorite.save((err, doc) => {
     if (err) return res.status(400).send(err);
     return res.status(200).json({ success: true });
+  });
+});
+
+router.post("/getFavoredMovie", (req, res) => {
+  Favorite.find({ userFrom: req.body.userFrom }).exec((err, favorites) => {
+    if (err) return res.status(400).send(err);
+    return res.status(200).json({ success: true, favorites });
+  });
+});
+
+router.post("/removeFromFavorite", (req, res) => {
+  Favorite.findOneAndDelete({
+    movieId: req.body.movieId,
+    userFrom: req.body.userFrom,
+  }).exec((err, result) => {
+    if (err) return res.status(400).send(err);
+    res.status(200).json({ success: true, result });
   });
 });
 
