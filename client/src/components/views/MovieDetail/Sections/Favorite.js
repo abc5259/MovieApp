@@ -17,6 +17,7 @@ function Favorite(props) {
     movieTitle: movieTitle,
     moviePost: moviePost,
     movieRunTime: movieRunTime,
+    favorite: Favorited,
   };
 
   useEffect(() => {
@@ -30,7 +31,11 @@ function Favorite(props) {
 
     Axios.post("/api/favorite/favorited", variables).then((response) => {
       if (response.data.success) {
-        setFavorited(response.data.favorited);
+        if (response.data.info && response.data.info[0]) {
+          setFavorited(response.data.info[0].favorite);
+        } else {
+          setFavorited(response.data.favorited);
+        }
       } else {
         alert("정보를 가져오는데 실패 했습니다.");
       }
@@ -50,6 +55,7 @@ function Favorite(props) {
         }
       );
     } else {
+      variables.favorite = true;
       Axios.post("/api/favorite/addToFavorite", variables).then((response) => {
         if (response.data.success) {
           setFavoriteNumber(FavoriteNumber + 1);
